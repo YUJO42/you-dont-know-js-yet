@@ -3,7 +3,7 @@
 ## 요약
 | Name | URL |
 |:---|:---|
-| holee |  |
+| holee | [Chapter 3: Objects](https://github.com/hochan222/Everything-in-JavaScript/wiki/Chapter-3:-Objects) |
 | sunpark |  |
 | dongbkim |  |
 | gim | [Chapter 3: Objects](https://velog.io/@mkitigy/Chapter-3-Objects) |
@@ -22,11 +22,24 @@
 
 > sunpark
 
+1. 다음 코드의 실행결과는 어떻게 될까?
+```javascript
+var test = {
+  "this": "that",
+  "what": "how"
+}
+
+test.when = "which"
+
+console.log(test);
+```
+
 <details>
 <summary> <b> :page_facing_up: 답지 </b>  </summary>
 <div markdown="1">
 
-
+1. 다음 코드의 실행결과는 어떻게 될까?
+> 맨 첫줄에 프로퍼티를 2개 만들었고, `test.when`을 통해 `when`이라는 키의 프로퍼티 역시 만들었다. 결국에 나오는 출력값은 `{ this: 'that', what: 'how', when: 'which' }`가 된다.
 
 </div>
 </details>
@@ -36,11 +49,25 @@
 
 > sunpark
 
+1. 모든 주요 타입은 객체이다. (O / X)
+
+2. 다음 단어를 분류에 맞게 분류해보세요.
+> 보기 : Array, Function, String, null, Number, RegExp, undefined, Boolean, Object, Date
+
+- 리터럴 / 생성자 형식과 무관하게 모두 객체이다 : `_____`, `_____`, `_____`, `_____`
+- 리터럴 형식과 생성자 형식이 존재하고, JS 엔진에서 상황에 맞게 변환해준다 : `_____`, `_____`, `_____`
+- 리터럴 형식이 없어 생성자 형식으로 생성해야 한다 : `_____`
+- 객체 래퍼 형식이 없어 그 자체로 유일값이다 : `_____`, `_____`
+
 <details>
 <summary> <b> :page_facing_up: 답지 </b>  </summary>
 <div markdown="1">
 
+1. 모든 주요 타입은 객체이다. (O / **X**)
+> 단순 원시 타입은 객체가 아니다. "자바스크립트는 모든 것이 객체다"라는 말은 옳지 않다.
 
+2. 다음 단어를 분류에 맞게 분류해보세요.
+> 리터럴 형식과 생성자 형식이 존재하고, JS 엔진에서 상황에 맞게 변환해준다 : String, Number, Boolean / 객체 래퍼 형식이 없어 그 자체로 유일값이다 : null, undefined / 리터럴 형식이 없어 생성자 형식으로 생성해야 한다 : Date / 리터럴 / 생성자 형식과 무관하게 모두 객체이다 : Object, Function, Array, RegExp
 
 </div>
 </details>
@@ -50,12 +77,120 @@
 
 > (Computed Property Names ~ Property Descriptors) dongbkim
 
+1. 다음 코드에서 에러가 발생하는 부분이 있다면 어떤 에러가 뜨는지 밝히고 고치시오.    
+
+```js
+var prefix = "hi";
+
+var obj = {
+	prefix + "bar" : "hey"
+};
+
+obj["heybar"];
+```
+
+2. property 이름으로 숫자를 사용할 수 있다. (O / X)    
+
+3. 다음 코드의 결과를 예측하시오. 에러가 발생한다면 고치시오.    
+```js
+var myArray = [ "foo", 42, "bar" ];
+
+myArray["baz"] = "baz";
+myArray.woody = "woody";
+myArray["14"] = "buzz"
+
+console.log(myArray.length);
+```
+
+4. 다음 코드의 결과를 예측하시오. 에러가 발생한다면 고치시오.   
+```js
+function anotherFunction() { /*..*/ }
+
+var anotherObject = {
+	c: true
+};
+
+var anotherArray = [];
+
+var myObject = {
+	a: 2,
+	b: anotherObject,
+	c: anotherArray,
+	d: anotherFunction
+};
+
+var newObj = Object.assign(myObject, anotherObject);
+
+console.log(newObj);
+```
+5. 다음 코드의 결과를 예측하시오. 에러가 발생한다면 고치시오.   
+```js
+var myObject = {
+	a: 2,
+	b: 4
+};
+
+myObject.a = 8;
+
+Object.defineProperty( myObject, "a", {
+	value: 4,
+	writable: true,
+	configurable: false,
+	enumerable: true
+} );
+
+console.log(myObject.a);		
+myObject.a = 5;
+console.log(myObject.a);
+
+Object.defineProperty( myObject, "b", {
+	value: 6,
+	writable: false
+} ); 
+console.log(myObject.a);
+myObject.a = 8;
+console.log(myObject.a);
+```  
+
 <details>
 <summary> <b> :page_facing_up: 답지 </b>  </summary>
 <div markdown="1">
 
+1.   
+```js
+var prefix = "hi";
 
+var obj = {
+	prifix + "bar" : "hey"//SyntaxError, key name으로 computed expression을 넣기 위해서는 `[]`을 추가해줘야 한다.
+};
 
+obj["heybar"];//TypeError, 위 에러를 고쳐도 heybar라는 key가 없기 때문에 고쳐줘야 한다.
+```
+
+2. property 이름으로 숫자를 사용할 수 있다. (**O** / X)    
+If you use any other value besides a string (primitive) as the property, it will first be converted to a string.    
+
+3. 15   
+```
+0: "foo"
+1: 42
+2: "bar"
+(empty x 11)
+14: "buzz"
+baz: "baz"
+woody: "woody"
+length: 15
+```
+
+4.  
+```
+a: 2
+b: {c: true}
+c: true
+d: ƒ anotherFunction()
+```
+
+5. 4 5 5 8    
 </div>
 </details>
 <br>
@@ -197,11 +332,45 @@ console.log(obj.a); // ?
 
 > sohpark
 
+1. forEach, every, some 의 동작방식의 차이를 설명하시오.
+
+2. 객체 리터럴 형식으로 만들어진 객체의 프로퍼티는 iteration을 수행할 때 프로퍼티의 삽입한 순서대로 순회한다. ( O, X )
+
+3. 다음 코드가 오류 없이 동작하려면 표시한 줄에서 무엇을 고쳐야하는지, 또 왜 오류가 발생했는지 설명하시오.
+
+```javascript
+let obj = {
+  hello: 1,
+  abc: 2,
+  yolo: 3,
+  1: "hmm",
+  2: "umm",
+};
+
+for (let i of obj) { // (•̀ᴗ•́)و
+  console.log(i);
+}
+```
+
 <details>
 <summary> <b> :page_facing_up: 답지 </b>  </summary>
 <div markdown="1">
 
+1.
+세 함수 모두 배열을 순회하는데 사용되며, 순회하면서 특정 콜백 함수를 실행할 수 있습니다. 큰 차이는 콜백의 반환값을 관찰하는지에 있습니다. 
 
+- forEach: 콜백의 반환값을 무시합니다. 
+- every: 콜백이 falsy value를 반환하면 더 이상 순회하지 않고 종료합니다.
+- some: 콜백이 truthy value를 반환하면 더 이상 순회하지 않고 종료합니다.
+
+2. 객체 리터럴 형식으로 만들어진 객체의 프로퍼티는 iteration을 수행할 때 프로퍼티의 삽입한 순서대로 순회한다. ( O, __X__ )
+
+> 어떤 형태로 생성되었는지는 관련이 없습니다. for ... in 으로 순회한 객체의 프로퍼티는 순서가 늘 보장되지 않습니다. 
+
+> 다만 ES5까지는 공식적으로 순서가 없다고 하였으나, ES6부터는 나름대로 관찰되는 순서가 있다고 합니다. 문자열의 경우 삽입한 순서대로 나오며, 숫자로 인식되는 프로퍼티명은 오름차순으로 나옵니다. 그리고 숫자가 문자열로 된 프로퍼티보다 먼저 나옵니다. 물론, 이 또한 보장된 것은 아니니 참고만 부탁드립니다. 
+
+3. 
+of 를 in 으로 교체하면 됩니다. 일반 객체는 배열과 달리 @@iterator(iterator 객체를 반환해주는 함수) 가 내장되어 있지 않아 for ... of 를 수행할 수 없습니다. 
 
 </div>
 </details>
